@@ -11,26 +11,7 @@ app.use((req, res, next) => {
 	next();
 })
 
-const USERS = [{
-		user: "vlad",
-		password: 123
-	},
-	{
-		user: "dima",
-		password: 123,
-		books: {
-			title: 'js is suck!',
-			author: "php developer"
-		}
-	},
-	{
-		user: "oleg",
-		password: 123
-	},
-	{
-		user: "anatolii",
-		password: 123
-	}];
+const USERS = require('./mock-data/users');
 
 
 // http.createServer((req, res)=>{
@@ -49,28 +30,44 @@ const getUsers= (req,res,next) =>{
 const sendUsers = (req, res, next) => {
 	res.status((200))
 	res.json(req.users);
-	req.users = USERS;
-	next();
 }
 
 
 const addUser = (req, res, next) => {
 	const user = req.body;
 	USERS.push(user);
+	req.users = USERS;
 	next();
 }
+
+const getBooks = (req, res, next) => {
+	const index = req.params.index;
+	req.books = USERS[index].books;
+	next();
+}
+
+const sendBooks = (req, res, next) => {
+	res.status('200');
+	res.json(req.books);
+	next();
+}
+
+
+app.get("/users/", getUsers, sendUsers);
+
+app.post("/users/", addUser, sendUsers);
+
+app.get("/users/:index/books", getBooks, sendBooks);
+
+//const users = await getUsers(); варіант доступу до масива
+
 // помилка для 404 перевизначена
 app.use((req, res, next) => {
 	let error = new Error('Not found page');
 	next(error);
 });
 
-app.get("/users/", getUsers, sendUsers);
-
-app.post("/users/", addUser, sendUsers);
-
-//const users = await getUsers(); варіант доступу до масива
-
+//all errors
 app.use((err, req, res, next) => {
 	res.status(500);
 	res.json({
