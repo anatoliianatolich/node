@@ -12,6 +12,9 @@ app.use((req, res, next) => {
 })
 
 const USERS = [
+
+const getUsers= () => [
+
 	{
 		user: "vlad",
 		password: 123
@@ -56,6 +59,13 @@ app.use((req, res, next) => {
 	let error = new Error('Not found page');
 	next(error);
 });
+
+const sendUsers = (req, res, next) => {
+	res.status((200))
+	res.json();
+}
+
+
 
 
 app.get("/users/", getUsers, sendUsers);
