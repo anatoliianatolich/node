@@ -44,23 +44,7 @@ const getUsers= (req,res,next) =>{
 	next()
 }
 
-const sendUsers = (req, res, next) => {
-	res.status((200))
-	res.json(req.users);
-}
-
-app.get("/users/", getUsers, sendUsers);
-	//const users = await getUsers(); варіант доступу до масива
-
-		user: "anatolii",
-		password: 123
-	}
-];
-
-const getUsers = (req, res, next) => {
-	req.users = USERS;
-	next()
-}
+//const users = await getUsers(); варіант доступу до масива
 
 const sendUsers = (req, res, next) => {
 	res.status((200))
@@ -80,14 +64,6 @@ app.use((req, res, next) => {
 	let error = new Error('Not found page');
 	next(error);
 });
-
-const sendUsers = (req, res, next) => {
-	res.status((200))
-	res.json();
-}
-
-
-
 
 app.get("/users/", getUsers, sendUsers);
 
