@@ -11,20 +11,7 @@ app.use((req, res, next) => {
 	next();
 })
 
-const USERS = [
-
-const getUsers= () => [
-
-	
-// http.createServer((req, res)=>{
-// 	res.writeHead(200, { 'Content-Type': 'text/plain' } );
-// 	debugger;
-// 	res.end('working server')
-// }).listen(5050);
-const getUsers= (req,res,next) =>{
-	req.users = [
-
-	{
+const USERS = [{
 		user: "vlad",
 		password: 123
 	},
@@ -41,9 +28,19 @@ const getUsers= (req,res,next) =>{
 		password: 123
 	},
 	{
-	user: "anatolii",
-	password: 123
-	}]
+		user: "anatolii",
+		password: 123
+	}];
+
+
+// http.createServer((req, res)=>{
+// 	res.writeHead(200, { 'Content-Type': 'text/plain' } );
+// 	debugger;
+// 	res.end('working server')
+// }).listen(5050);
+
+const getUsers= (req,res,next) =>{
+	req.users = USERS;
 	next()
 }
 
