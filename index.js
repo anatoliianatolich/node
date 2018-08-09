@@ -57,7 +57,22 @@ app.get("/users/", getUsers, sendUsers);
 
 app.post("/users/", addUser, sendUsers);
 
+app.delete('/users');
+
+app.put('/users/:index/'); //lodash ...merge
+
+// book
+
 app.get("/users/:index/books", getBooks, sendBooks);
+
+app.post('/users/:index/books');
+
+app.put("/users/:index/books/:title");
+
+app.delete("/users/:index/books/:title");
+
+// *
+app.get("/users/:index/books/:title");
 
 //const users = await getUsers(); варіант доступу до масива
 
