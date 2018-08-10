@@ -46,6 +46,20 @@ const getBooks = (req, res, next) => {
 	next();
 }
 
+const delUser = (req, res, next)=> {
+	USERS.pop();
+	req.users = USERS;
+	next()
+}
+
+const putUser = (req, res, next) => {
+	debugger;
+	const newUser = req.body;
+	const index = req.params.index;
+	USERS[index].user = newUser;
+	next()
+}
+
 const sendBooks = (req, res, next) => {
 	res.status('200');
 	res.json(req.books);
@@ -53,13 +67,15 @@ const sendBooks = (req, res, next) => {
 }
 
 
+
+
 app.get("/users/", getUsers, sendUsers);
 
 app.post("/users/", addUser, sendUsers);
 
-app.delete('/users');
+app.delete('/users', delUser, sendUsers);
 
-app.put('/users/:index/'); //lodash ...merge
+app.put('/users/:index/', putUser ,sendUsers); //lodash ...merge
 
 // book
 
