@@ -2,6 +2,7 @@
 const app = require('express')();//  const app = require('express')() == {const app = require('express'); const app = app();}
 const conf = require('./config/development');
 const bodyParser = require('body-parser');
+var _ = require('lodash');
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({extended: true})); // for parsing application/x-www-form-urlencoded
@@ -40,11 +41,7 @@ const addUser = (req, res, next) => {
 	next();
 }
 
-const getBooks = (req, res, next) => {
-	const index = req.params.index;
-	req.books = USERS[index].books;
-	next();
-}
+
 
 const delUser = (req, res, next)=> {
 	USERS.pop();
@@ -53,16 +50,34 @@ const delUser = (req, res, next)=> {
 }
 
 const putUser = (req, res, next) => {
-	debugger;
 	const newUser = req.body;
 	const index = req.params.index;
-	USERS[index].user = newUser;
+	const putUser = [];
+	putUser[index] = newUser;
+	req.users = _.merge(USERS, putUser);;
 	next()
+}
+
+const getBooks = (req, res, next) => {
+	const index = req.params.index;
+	req.books = USERS[index].books;
+	next();
 }
 
 const sendBooks = (req, res, next) => {
 	res.status('200');
 	res.json(req.books);
+	next();
+}
+
+const getNewBooks = (req, res, next) => {
+	const index = req.params.index;
+	const newBook = req.body;
+	const oldBooks = USERS[index].books;
+	USERS[index].books = [oldBooks];
+	
+	USERS[index].books.push(newBook);
+	req.users = USERS[index];
 	next();
 }
 
@@ -81,7 +96,7 @@ app.put('/users/:index/', putUser ,sendUsers); //lodash ...merge
 
 app.get("/users/:index/books", getBooks, sendBooks);
 
-app.post('/users/:index/books');
+app.post('/users/:index/books',getNewBooks, sendUsers);
 
 app.put("/users/:index/books/:title");
 
