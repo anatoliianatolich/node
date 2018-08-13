@@ -1,9 +1,14 @@
+const slug = require('slug');
+
 [{
     "user": "vlad",
     "password": 123,
     "books": {
         "title": "java is suck!",
-        "author": "js developer"
+        "author": "js developer",
+        get url() {
+            return slug(this.title)
+        }
     }
 }, {
     "user": "dima",

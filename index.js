@@ -2,7 +2,8 @@
 const app = require('express')();//  const app = require('express')() == {const app = require('express'); const app = app();}
 const conf = require('./config/development');
 const bodyParser = require('body-parser');
-var _ = require('lodash');
+const _ = require('lodash');
+const slug = require('slug');
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({extended: true})); // for parsing application/x-www-form-urlencoded
@@ -13,6 +14,8 @@ app.use((req, res, next) => {
 })
 
 const USERS = require('./mock-data/users');
+// const index = req.params.index;
+
 
 
 // http.createServer((req, res)=>{
@@ -74,11 +77,20 @@ const getNewBooks = (req, res, next) => {
 	const index = req.params.index;
 	const newBook = req.body;
 	const oldBooks = USERS[index].books;
-	USERS[index].books = [oldBooks];
-	
+	if (USERS[index].books.length == undefined) {
+		USERS[index].books = [oldBooks];
+	}
 	USERS[index].books.push(newBook);
 	req.users = USERS[index];
 	next();
+}
+
+const changeBook =  (req, res, next) => {
+	const index = req.params.index;
+	const tBook = slug(req.params.index.title);
+	debugger;
+	const newBook = req.body;
+	req.users = USERS[index].books.title
 }
 
 
@@ -98,7 +110,7 @@ app.get("/users/:index/books", getBooks, sendBooks);
 
 app.post('/users/:index/books',getNewBooks, sendUsers);
 
-app.put("/users/:index/books/:title");
+app.put("/users/:index/books/:title",changeBook, send);
 
 app.delete("/users/:index/books/:title");
 
