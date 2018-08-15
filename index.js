@@ -1,6 +1,7 @@
 //const http = require('http');
 const app = require('express')();//  const app = require('express')() == {const app = require('express'); const app = app();}
 const conf = require('./config/development');
+const fs =  require('fs');
 
 // http.createServer((req, res)=>{
 // 	res.writeHead(200, { 'Content-Type': 'text/plain' } );
@@ -29,6 +30,7 @@ const users = [
 app.get("/users/",(req ,res, next)=> {
 	res.status((200))
 	res.json(users);
+	const indexPage = fs.readFileSync('./page/index.html');
 })
 
 app.listen(conf.port);
