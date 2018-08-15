@@ -63,7 +63,14 @@ const putUser = (req, res, next) => {
 
 const getBooks = (req, res, next) => {
 	const index = req.params.index;
-	req.books = USERS[index].books;
+	debugger;
+	const title = req.params.title;
+	//title = title.replace('-',' ');
+	console.log(title);
+	req.books = USERS[index].books.find((e)=>{
+
+		return e == title;
+	});
 	next();
 }
 
@@ -87,10 +94,12 @@ const getNewBooks = (req, res, next) => {
 
 const changeBook =  (req, res, next) => {
 	const index = req.params.index;
-	const tBook = slug(req.params.index.title);
+	//const tBook = slug(req.params.index.title);
 	debugger;
 	const newBook = req.body;
-	req.users = USERS[index].books.title
+	req.users = USERS[index].books.title;
+	console.log(tBook);
+	next();
 }
 
 
@@ -106,11 +115,11 @@ app.put('/users/:index/', putUser ,sendUsers); //lodash ...merge
 
 // book
 
-app.get("/users/:index/books", getBooks, sendBooks);
+app.get("/users/:index/books/:title", getBooks, sendBooks);
 
 app.post('/users/:index/books',getNewBooks, sendUsers);
 
-app.put("/users/:index/books/:title",changeBook, send);
+app.put("/users/:index/books/:title",changeBook, sendUsers);
 
 app.delete("/users/:index/books/:title");
 
