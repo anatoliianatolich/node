@@ -13,7 +13,7 @@ app.use((req, res, next) => {
 	next();
 })
 
-const USERS = require('./mock-data/users');
+const USERS = require('./mock-data/usersjs');
 // const index = req.params.index;
 
 
@@ -62,15 +62,17 @@ const putUser = (req, res, next) => {
 }
 
 const getBooks = (req, res, next) => {
-	const index = req.params.index;
-
-	const title = req.params.title;
-	//title = title.replace('-',' ');
-	console.log(title);
-	req.books = USERS[index].books.find((e)=>{
-
-		return e == title;
-	});
+	const {index, title} = req.params;
+	console.log(index);
+	console.log(USERS.length);
+	
+	const user = USERS[3];
+	console.log(user);
+	
+	const books = [...user.books]
+	const book = books.find(current=>slug(current.title) === title);
+	console.log(1);
+	req.book = book;
 	next();
 }
 
@@ -79,6 +81,14 @@ const sendBooks = (req, res, next) => {
 	res.json(req.books);
 	next();
 }
+
+const sendFindBook = (req, res, next) => {
+	res.status('200');
+	res.json(req.book);
+	next();
+}
+
+
 
 const getNewBooks = (req, res, next) => {
 	const index = req.params.index;
@@ -115,7 +125,7 @@ app.put('/users/:index/', putUser ,sendUsers); //lodash ...merge
 
 // book
 
-app.get("/users/:index/books/:title", getBooks, sendBooks);
+app.get("/users/:index/books/:title", getBooks, sendFindBook);
 
 app.post('/users/:index/books',getNewBooks, sendUsers);
 
