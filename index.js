@@ -63,7 +63,7 @@ const putUser = (req, res, next) => {
 
 const getBooks = (req, res, next) => {
 	const index = req.params.index;
-	debugger;
+
 	const title = req.params.title;
 	//title = title.replace('-',' ');
 	console.log(title);
