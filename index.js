@@ -13,7 +13,8 @@ app.use((req, res, next) => {
 	next();
 })
 
-const USERS = require('./mock-data/usersjs');
+const USERS = require('./mock-data/users');
+
 // const index = req.params.index;
 
 
@@ -63,15 +64,9 @@ const putUser = (req, res, next) => {
 
 const getBooks = (req, res, next) => {
 	const {index, title} = req.params;
-	console.log(index);
-	console.log(USERS.length);
-	
-	const user = USERS[3];
-	console.log(user);
-	
+	const user = USERS[index];
 	const books = [...user.books]
 	const book = books.find(current=>slug(current.title) === title);
-	console.log(1);
 	req.book = book;
 	next();
 }
@@ -103,9 +98,7 @@ const getNewBooks = (req, res, next) => {
 }
 
 const changeBook =  (req, res, next) => {
-	const index = req.params.index;
-	//const tBook = slug(req.params.index.title);
-	debugger;
+	const {index, title} = req.params;
 	const newBook = req.body;
 	req.users = USERS[index].books.title;
 	console.log(tBook);
@@ -129,7 +122,7 @@ app.get("/users/:index/books/:title", getBooks, sendFindBook);
 
 app.post('/users/:index/books',getNewBooks, sendUsers);
 
-app.put("/users/:index/books/:title",changeBook, sendUsers);
+app.put("/users/:index/books/:title", changeBook, sendUsers);
 
 app.delete("/users/:index/books/:title");
 
