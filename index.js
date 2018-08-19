@@ -2,7 +2,7 @@
 const app = require('express')();//  const app = require('express')() == {const app = require('express'); const app = app();}
 const conf = require('./config/development');
 const bodyParser = require('body-parser');
-const _ = require('lodash');
+const {merge} = require('lodash');
 const slug = require('slug');
 
 app.use(bodyParser.json()); // for parsing application/json
@@ -13,7 +13,7 @@ app.use((req, res, next) => {
 	next();
 })
 
-const USERS = require('./mock-data/usersjs');
+const USERS = require('./mock-data/users');
 // const index = req.params.index;
 
 
@@ -57,21 +57,15 @@ const putUser = (req, res, next) => {
 	const index = req.params.index;
 	const putUser = [];
 	putUser[index] = newUser;
-	req.users = _.merge(USERS, putUser);;
+	req.users = merge(USERS, putUser);;
 	next()
 }
 
 const getBooks = (req, res, next) => {
 	const {index, title} = req.params;
-	console.log(index);
-	console.log(USERS.length);
-	
-	const user = USERS[3];
-	console.log(user);
-	
+	const user = USERS[index];
 	const books = [...user.books]
 	const book = books.find(current=>slug(current.title) === title);
-	console.log(1);
 	req.book = book;
 	next();
 }
@@ -79,19 +73,17 @@ const getBooks = (req, res, next) => {
 const sendBooks = (req, res, next) => {
 	res.status('200');
 	res.json(req.books);
-	next();
 }
 
 const sendFindBook = (req, res, next) => {
 	res.status('200');
 	res.json(req.book);
-	next();
 }
 
 
 
 const getNewBooks = (req, res, next) => {
-	const index = req.params.index;
+	const {index} = req.params;
 	const newBook = req.body;
 	const oldBooks = USERS[index].books;
 	if (USERS[index].books.length == undefined) {
@@ -103,16 +95,32 @@ const getNewBooks = (req, res, next) => {
 }
 
 const changeBook =  (req, res, next) => {
-	const index = req.params.index;
-	//const tBook = slug(req.params.index.title);
+
+	const {index, title} = req.params;
 	debugger;
-	const newBook = req.body;
-	req.users = USERS[index].books.title;
-	console.log(tBook);
+	const allBookUS = USERS[index].books;
+	const newBook = allBookUS.find((currBook) => {
+		return slug(currBook.title).toLowerCase() === title.toLowerCase();
+	})
+	merge(newBook,req.body);
+	req.books = allBookUS;
 	next();
 }
 
-
+const delBooks = (req, res, next) => {
+	const {	index, title } = req.params;
+	console.log(title);
+	debugger;
+	const allBookUS = USERS[index].books;
+	allBookUS.find((currBook, i) => {
+		// console.log(i);
+		console.log(title);
+		 slug(currBook.title).toLowerCase() === title.toLowerCase();
+		allBookUS.splice(i, 1);
+	})
+	req.books = allBookUS;
+	next();
+}
 
 
 app.get("/users/", getUsers, sendUsers);
@@ -129,9 +137,9 @@ app.get("/users/:index/books/:title", getBooks, sendFindBook);
 
 app.post('/users/:index/books',getNewBooks, sendUsers);
 
-app.put("/users/:index/books/:title",changeBook, sendUsers);
+app.put("/users/:index/books/:title", changeBook, sendBooks);
 
-app.delete("/users/:index/books/:title");
+app.delete("/users/:index/books/:title", delBooks, sendBooks);
 
 // *
 app.get("/users/:index/books/:title");

@@ -1,36 +1,38 @@
 [{
     "user": "vlad",
     "password": 123,
-    "books": [{
+    "books": [
+        {
         "title": "java is suck!",
-        "author": "js developer"},{
+        "author": "js developer"},
+        {
             "title": "js is suck!",
             "author": "php developer"
         },{
-        "title": "python is nice!",
+        "title": "python is nice",
         "author": "js developer"
     },
     {
-        "title": "php is suck!",
+        "title": "php is suck",
         "author": "js developer"
     }]
 }, {
     "user": "dima",
     "password": 123,
     "books": [{
-            "title": "java is suck!",
+            "title": "java is suck",
             "author": "js developer"
         },
         {
-            "title": "js is suck!",
+            "title": "js is suck",
             "author": "php developer"
         },
         {
-            "title": "python is nice!",
+            "title": "python is nice",
             "author": "js developer"
         },
         {
-            "title": "php is suck!",
+            "title": "php is suck",
             "author": "js developer"
         }]
 }, {
@@ -38,19 +40,19 @@
     "password": 123,
     "books": [
         {
-            "title": "java is suck!",
+            "title": "java is suck",
             "author": "js developer"
         },
         {
-            "title": "js is suck!",
+            "title": "js is suck",
             "author": "php developer"
         },
         {
-            "title": "python is nice!",
+            "title": "python is nice",
             "author": "js developer"
         },
         {
-            "title": "php is suck!",
+            "title": "php is suck",
             "author": "js developer"
         }
     ]
@@ -59,19 +61,19 @@
     "password": 123,
     "books": [
         {
-            "title": "java is suck!",
+            "title": "java is suck",
             "author": "js developer"
         },
         {
-            "title": "js is suck!",
+            "title": "js is suck",
             "author": "php developer"
         },
         {
-            "title": "python is nice!",
+            "title": "python is nice",
             "author": "js developer"
         },
         {
-            "title": "php is suck!",
+            "title": "php is suck",
             "author": "js developer"
         }
     ]
