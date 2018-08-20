@@ -112,13 +112,16 @@ const delBooks = (req, res, next) => {
 	console.log(title);
 	debugger;
 	const allBookUS = USERS[index].books;
-	allBookUS.find((currBook, i) => {
-		// console.log(i);
-		console.log(title);
-		 slug(currBook.title).toLowerCase() === title.toLowerCase();
-		allBookUS.splice(i, 1);
+	const listBook = allBookUS.foreach((currBook, i) => {
+		if(slug(currBook.title).toLowerCase() === title.toLowerCase()) {
+		 delete currBook.title;
+		}
+		return currBook[i];
+		console.log(currBook);
+		
 	})
-	req.books = allBookUS;
+	
+	req.books = currBook;
 	next();
 }
 
