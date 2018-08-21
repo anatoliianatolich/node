@@ -57,7 +57,7 @@ const putUser = (req, res, next) => {
 	const index = req.params.index;
 	const putUser = [];
 	putUser[index] = newUser;
-	req.users = merge(USERS, putUser);;
+	req.users = merge(USERS, putUser);
 	next()
 }
 
@@ -109,16 +109,19 @@ const changeBook =  (req, res, next) => {
 
 const delBooks = (req, res, next) => {
 	const {	index, title } = req.params;
-	console.log(title);
 	debugger;
 	const allBookUS = USERS[index].books;
-	allBookUS.find((currBook, i) => {
-		// console.log(i);
-		console.log(title);
-		 slug(currBook.title).toLowerCase() === title.toLowerCase();
-		allBookUS.splice(i, 1);
+	// console.log(allBookUS);
+	allBookUS.map((currBook, i) => {
+		console.log(currBook);
+		console.log(i);
+		if (slug(currBook.title).toLowerCase() === title.toLowerCase()){
+			delete currBook.title;
+		}
+
+		USERS[index].books[i] =currBook;
 	})
-	req.books = allBookUS;
+	req.books = USERS[index].books;
 	next();
 }
 
