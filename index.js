@@ -1,8 +1,13 @@
 //const http = require('http');
 const app = require('express')();//  const app = require('express')() == {const app = require('express'); const app = app();}
 const conf = require('./config/development');
+const fs =  require('fs');
+const jsdom = require("jsdom");
+const {	JSDOM } = jsdom;
+
+
 const bodyParser = require('body-parser');
-const _ = require('lodash');
+const {merge} = require('lodash');
 const slug = require('slug');
 
 app.use(bodyParser.json()); // for parsing application/json
@@ -14,7 +19,6 @@ app.use((req, res, next) => {
 })
 
 const USERS = require('./mock-data/users');
-
 // const index = req.params.index;
 
 
@@ -58,7 +62,7 @@ const putUser = (req, res, next) => {
 	const index = req.params.index;
 	const putUser = [];
 	putUser[index] = newUser;
-	req.users = _.merge(USERS, putUser);;
+	req.users = merge(USERS, putUser);
 	next()
 }
 
@@ -74,19 +78,16 @@ const getBooks = (req, res, next) => {
 const sendBooks = (req, res, next) => {
 	res.status('200');
 	res.json(req.books);
-	next();
 }
 
 const sendFindBook = (req, res, next) => {
 	res.status('200');
 	res.json(req.book);
-	next();
 }
 
 
-
 const getNewBooks = (req, res, next) => {
-	const index = req.params.index;
+	const {index} = req.params;
 	const newBook = req.body;
 	const oldBooks = USERS[index].books;
 	if (USERS[index].books.length == undefined) {
@@ -98,14 +99,35 @@ const getNewBooks = (req, res, next) => {
 }
 
 const changeBook =  (req, res, next) => {
+
+
 	const {index, title} = req.params;
-	const newBook = req.body;
-	req.users = USERS[index].books.title;
-	console.log(tBook);
+	debugger;
+	const allBookUS = USERS[index].books;
+	const newBook = allBookUS.find((currBook) => {
+		return slug(currBook.title).toLowerCase() === title.toLowerCase();
+	})
+	merge(newBook,req.body);
+	req.books = allBookUS;
 	next();
 }
 
-
+const delBooks = (req, res, next) => {
+	const {	index, title } = req.params;
+	debugger;
+	const allBookUS = USERS[index].books;
+	// console.log(allBookUS);
+	allBookUS.map((currBook, i) => {
+		console.log(currBook);
+		console.log(i);
+		if (slug(currBook.title).toLowerCase() === title.toLowerCase()){
+			delete currBook.title;
+		}
+		USERS[index].books[i] =currBook;
+	})
+	req.books = USERS[index].books;
+	next();
+}
 
 
 app.get("/users/", getUsers, sendUsers);
@@ -124,7 +146,8 @@ app.post('/users/:index/books',getNewBooks, sendUsers);
 
 app.put("/users/:index/books/:title", changeBook, sendUsers);
 
-app.delete("/users/:index/books/:title");
+
+app.delete("/users/:index/books/:title", delBooks, sendBooks);
 
 // *
 app.get("/users/:index/books/:title");
@@ -148,5 +171,4 @@ app.use((err, req, res, next) => {
 app.listen(conf.port);
 console.log('server listen port 5050');
 
-//start git lessons4
 
