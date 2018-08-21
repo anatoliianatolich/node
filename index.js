@@ -1,8 +1,10 @@
 //const http = require('http');
 const app = require('express')();//  const app = require('express')() == {const app = require('express'); const app = app();}
 const conf = require('./config/development');
-
 const fs =  require('fs');
+const jsdom = require("jsdom");
+const {	JSDOM } = jsdom;
+
 
 const bodyParser = require('body-parser');
 const {merge} = require('lodash');
