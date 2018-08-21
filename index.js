@@ -18,6 +18,16 @@ app.use((req, res, next) => {
 	next();
 })
 
+// robot 
+
+const dom = new JSDOM(``, {
+	url: "https://example.org/",
+	referrer: "https://example.com/",
+	contentType: "text/html",
+	includeNodeLocations: true,
+	storageQuota: 10000000
+});
+
 const USERS = require('./mock-data/users');
 // const index = req.params.index;
 
