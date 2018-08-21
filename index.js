@@ -1,6 +1,9 @@
 //const http = require('http');
 const app = require('express')();//  const app = require('express')() == {const app = require('express'); const app = app();}
 const conf = require('./config/development');
+
+const fs =  require('fs');
+
 const bodyParser = require('body-parser');
 const {merge} = require('lodash');
 const slug = require('slug');
@@ -57,7 +60,7 @@ const putUser = (req, res, next) => {
 	const index = req.params.index;
 	const putUser = [];
 	putUser[index] = newUser;
-	req.users = merge(USERS, putUser);;
+	req.users = merge(USERS, putUser);
 	next()
 }
 
@@ -79,7 +82,6 @@ const sendFindBook = (req, res, next) => {
 	res.status('200');
 	res.json(req.book);
 }
-
 
 
 const getNewBooks = (req, res, next) => {
@@ -109,19 +111,17 @@ const changeBook =  (req, res, next) => {
 
 const delBooks = (req, res, next) => {
 	const {	index, title } = req.params;
-	console.log(title);
 	debugger;
 	const allBookUS = USERS[index].books;
-	const listBook = allBookUS.foreach((currBook, i) => {
-		if(slug(currBook.title).toLowerCase() === title.toLowerCase()) {
-		 delete currBook.title;
-		}
-		return currBook[i];
+	allBookUS.map((currBook, i) => {
 		console.log(currBook);
-		
+		console.log(i);
+		if (slug(currBook.title).toLowerCase() === title.toLowerCase()){
+			delete currBook.title;
+		}
+		USERS[index].books[i] =currBook;
 	})
-	
-	req.books = currBook;
+	req.books = USERS[index].books;
 	next();
 }
 
@@ -166,5 +166,4 @@ app.use((err, req, res, next) => {
 app.listen(conf.port);
 console.log('server listen port 5050');
 
-//start git lessons4
 
