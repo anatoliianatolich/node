@@ -2,13 +2,10 @@
 const app = require('express')();//  const app = require('express')() == {const app = require('express'); const app = app();}
 const conf = require('./config/development');
 const fs =  require('fs');
-const jsdom = require("jsdom");
-const {	JSDOM } = jsdom;
-
-
 const bodyParser = require('body-parser');
-const {merge} = require('lodash');
-const slug = require('slug');
+const{getUsers, sendUsers, delUser,putUser, addUser} = require("./controllers/users");
+const{getBooks, sendBooks, sendFindBook, getNewBooks, changeBook,delBooks} = require("./controllers/books");
+const{getVacancies} = require("./controllers/technologies");
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({extended: true})); // for parsing application/x-www-form-urlencoded
@@ -18,145 +15,9 @@ app.use((req, res, next) => {
 	next();
 })
 
-// robot 
-
-const dom = new JSDOM(``, {
-	url: "https://example.org/",
-	referrer: "https://example.com/",
-	contentType: "text/html",
-	includeNodeLocations: true,
-	storageQuota: 10000000
-});
-
-const SKILL = {
-	html: false,
-	javascript: false,
-	react: false,
-	node: false
-}
-getVacancies = async (req, res, next) => {
-	const {query} = req.params;
-	const dom = JSDOM.fromURL(url, {});
-	const description = await dom.window.document.querySelector('.car.wordwrap').textContent.toLowerCase();
-	Object.keys(SKILL).forEach((tech) => {
-		SKILL[tech]= description.includes(tech.toLowerCase());
-	});
-	res.send(SKILL);
-}
-
 app.get("/robotGetVac", getVacancies);
 
 const USERS = require('./mock-data/users');
-// const index = req.params.index;
-
-
-
-// http.createServer((req, res)=>{
-// 	res.writeHead(200, { 'Content-Type': 'text/plain' } );
-// 	debugger;
-// 	res.end('working server')
-// }).listen(5050);
-
-const getUsers= (req,res,next) =>{
-	req.users = USERS;
-	next()
-}
-
-//const users = await getUsers(); варіант доступу до масива
-
-const sendUsers = (req, res, next) => {
-	res.status((200))
-	res.json(req.users);
-}
-
-
-const addUser = (req, res, next) => {
-	const user = req.body;
-	USERS.push(user);
-	req.users = USERS;
-	next();
-}
-
-
-
-const delUser = (req, res, next)=> {
-	USERS.pop();
-	req.users = USERS;
-	next()
-}
-
-const putUser = (req, res, next) => {
-	const newUser = req.body;
-	const index = req.params.index;
-	const putUser = [];
-	putUser[index] = newUser;
-	req.users = merge(USERS, putUser);
-	next()
-}
-
-const getBooks = (req, res, next) => {
-	const {index, title} = req.params;
-	const user = USERS[index];
-	const books = [...user.books]
-	const book = books.find(current=>slug(current.title) === title);
-	req.book = book;
-	next();
-}
-
-const sendBooks = (req, res, next) => {
-	res.status('200');
-	res.json(req.books);
-}
-
-const sendFindBook = (req, res, next) => {
-	res.status('200');
-	res.json(req.book);
-}
-
-
-const getNewBooks = (req, res, next) => {
-	const {index} = req.params;
-	const newBook = req.body;
-	const oldBooks = USERS[index].books;
-	if (USERS[index].books.length == undefined) {
-		USERS[index].books = [oldBooks];
-	}
-	USERS[index].books.push(newBook);
-	req.users = USERS[index];
-	next();
-}
-
-const changeBook =  (req, res, next) => {
-
-
-	const {index, title} = req.params;
-	debugger;
-	const allBookUS = USERS[index].books;
-	const newBook = allBookUS.find((currBook) => {
-		return slug(currBook.title).toLowerCase() === title.toLowerCase();
-	})
-	merge(newBook,req.body);
-	req.books = allBookUS;
-	next();
-}
-
-const delBooks = (req, res, next) => {
-	const {	index, title } = req.params;
-	debugger;
-	const allBookUS = USERS[index].books;
-	// console.log(allBookUS);
-	allBookUS.map((currBook, i) => {
-		console.log(currBook);
-		console.log(i);
-		if (slug(currBook.title).toLowerCase() === title.toLowerCase()){
-			delete currBook.title;
-		}
-		USERS[index].books[i] =currBook;
-	})
-	req.books = USERS[index].books;
-	next();
-}
-
 
 app.get("/users/", getUsers, sendUsers);
 
@@ -180,8 +41,6 @@ app.delete("/users/:index/books/:title", delBooks, sendBooks);
 // *
 app.get("/users/:index/books/:title");
 
-//const users = await getUsers(); варіант доступу до масива
-
 // помилка для 404 перевизначена
 app.use((req, res, next) => {
 	let error = new Error('Not found page');
@@ -195,7 +54,8 @@ app.use((err, req, res, next) => {
 		error: err.message,
 		stack: err.stack
 	})
-})
+});
+
 app.listen(conf.port);
 console.log('server listen port 5050');
 
