@@ -2,10 +2,13 @@
 const app = require('express')();//  const app = require('express')() == {const app = require('express'); const app = app();}
 const conf = require('./config/development');
 const fs =  require('fs');
+const usersRoute = require('./route/users');
+
+
 const bodyParser = require('body-parser');
-const{getUsers, sendUsers, delUser,putUser, addUser} = require("./controllers/users");
 const{getBooks, sendBooks, sendFindBook, getNewBooks, changeBook,delBooks} = require("./controllers/books");
 const{getVacancies} = require("./controllers/technologies");
+
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({extended: true})); // for parsing application/x-www-form-urlencoded
@@ -19,13 +22,15 @@ app.get("/robotGetVac", getVacancies);
 
 const USERS = require('./mock-data/users');
 
-app.get("/users/", getUsers, sendUsers);
+app.use('/users/', usersRoute);
 
-app.post("/users/", addUser, sendUsers);
+// app.get("/users/", getUsers, sendUsers);
 
-app.delete('/users', delUser, sendUsers);
+// app.post("/users/", addUser, sendUsers);
 
-app.put('/users/:index/', putUser ,sendUsers); //lodash ...merge
+// app.delete('/users', delUser, sendUsers);
+
+// app.put('/users/:index/', putUser ,sendUsers); //lodash ...merge
 
 // book
 
