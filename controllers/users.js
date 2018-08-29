@@ -19,7 +19,6 @@ module.exports.delUser = (req, res, next) => {
 
 module.exports.putUser = (req, res, next) => {
     const newUser = req.body;
-
     const index = req.params.index;
     const putUser = [];
     putUser[index] = newUser;

@@ -1,6 +1,5 @@
 const app = require('express')();//  const app = require('express')() == {const app = require('express'); const app = app();}
 const conf = require('./config/development');
-const fs =  require('fs');
 const usersRoute = require('./route/users');
 const booksRoute = require('./route/books');
 const bodyParser = require('body-parser');
@@ -19,16 +18,6 @@ app.use((req, res, next) => {
 app.get("/robotGetVac", getVacancies);
 
 app.use('/users/', usersRoute);
-
-// app.get("/users/", getUsers, sendUsers);
-
-// app.post("/users/", addUser, sendUsers);
-
-// app.delete('/users', delUser, sendUsers);
-
-// app.put('/users/:index/', putUser ,sendUsers); //lodash ...merge
-
-// book
 
 app.use('/users/:index/books/', booksRoute);
 
