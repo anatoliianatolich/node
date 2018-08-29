@@ -20,7 +20,10 @@ module.exports.sendFindBook = (req, res, next) => {
 	res.status('200');
 	res.json(req.book);
 }
-
+module.exports.findBookUsers = (req, res, next) => {
+	res.status('200');
+	res.json(req.user);
+}
 
 module.exports.getNewBooks = (req, res, next) => {
 	const {index} = req.params;
@@ -30,13 +33,11 @@ module.exports.getNewBooks = (req, res, next) => {
 		USERS[index].books = [oldBooks];
 	}
 	USERS[index].books.push(newBook);
-	req.users = USERS[index];
+	req.user = USERS[index];
 	next();
 }
 
 module.exports.changeBook = (req, res, next) => {
-
-
 	const {index, title} = req.params;
 	debugger;
 	const allBookUS = USERS[index].books;

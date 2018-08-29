@@ -1,14 +1,12 @@
-//const http = require('http');
 const app = require('express')();//  const app = require('express')() == {const app = require('express'); const app = app();}
 const conf = require('./config/development');
 const fs =  require('fs');
 const usersRoute = require('./route/users');
-
-
+const booksRoute = require('./route/books');
 const bodyParser = require('body-parser');
-const{getBooks, sendBooks, sendFindBook, getNewBooks, changeBook,delBooks} = require("./controllers/books");
 const{getVacancies} = require("./controllers/technologies");
 
+const USERS = require('./mock-data/users');
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({extended: true})); // for parsing application/x-www-form-urlencoded
@@ -19,8 +17,6 @@ app.use((req, res, next) => {
 })
 
 app.get("/robotGetVac", getVacancies);
-
-const USERS = require('./mock-data/users');
 
 app.use('/users/', usersRoute);
 
@@ -34,14 +30,7 @@ app.use('/users/', usersRoute);
 
 // book
 
-app.get("/users/:index/books/:title", getBooks, sendFindBook);
-
-app.post('/users/:index/books',getNewBooks, sendUsers);
-
-app.put("/users/:index/books/:title", changeBook, sendUsers);
-
-
-app.delete("/users/:index/books/:title", delBooks, sendBooks);
+app.use('/users/:index/books/', booksRoute);
 
 // *
 app.get("/users/:index/books/:title");
