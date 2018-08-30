@@ -8,7 +8,7 @@ const SKILL = {
     node: false
 }
 getVacancies = async (req, res, next) => {
-    const { query } = req.params;
+    const { url } = req.query;
     const dom = JSDOM.fromURL(url, {});
     const description = await dom.window.document.querySelector('.car.wordwrap').textContent.toLowerCase();
     Object.keys(SKILL).forEach((tech) => {

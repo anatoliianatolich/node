@@ -22,7 +22,7 @@ app.use('/users/', usersRoute);
 app.use('/users/:index/books/', booksRoute);
 
 // *
-app.get("/users/:index/books/:title");
+// app.get("/users/:index/books/:title");
 
 // помилка для 404 перевизначена
 app.use((req, res, next) => {
