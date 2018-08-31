@@ -164,6 +164,6 @@ app.use((err, req, res, next) => {
 	})
 })
 app.listen(conf.port);
-console.log('server listen port 5050');
+console.log('server listen port ' + conf.port);
 
 
