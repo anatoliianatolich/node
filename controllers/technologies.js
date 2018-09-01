@@ -1,5 +1,5 @@
-const jsdom = require("jsdom");
-const {JSDOM} = jsdom;
+const {JSDOM} = require("jsdom");
+
 
 const SKILL = {
     html: false,
@@ -7,12 +7,18 @@ const SKILL = {
     react: false,
     node: false
 }
-getVacancies = async (req, res, next) => {
+module.exports.getVacancies = async (req, res, next) => {
     const { url } = req.query;
-    const dom = JSDOM.fromURL(url, {});
-    const description = await dom.window.document.querySelector('.car.wordwrap').textContent.toLowerCase();
+    
+    const dom = await JSDOM.fromURL(url, {});
+    debugger;
+    const description = dom.window.document.querySelector(".card.wordwrap").textContent.toLowerCase();
+    debugger;
     Object.keys(SKILL).forEach((tech) => {
         SKILL[tech] = description.includes(tech.toLowerCase());
     });
     res.send(SKILL);
-}
+};
+
+
+ 

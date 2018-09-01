@@ -15,7 +15,7 @@ app.use((req, res, next) => {
 	next();
 })
 
-app.get("/robotGetVac", getVacancies);
+app.get("/robotGetVac/", getVacancies);
 
 app.use('/users/', usersRoute);
 
