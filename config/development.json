@@ -1,4 +1,4 @@
 {
 	"port": 5050,
-	"db": "mongodb://localhost:27017/books"
+	"db": "mongodb://localhost:27017/goit"
 }
