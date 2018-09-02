@@ -1,12 +1,12 @@
 const express = require('express');
-const router = express.Router();
+const router = express.Router({mergeParams:true});
 
 const {getBooks, sendFindBook, getNewBooks, findBookUsers, sendBooks, changeBook, delBooks} = require('../controllers/books')
 
 
-router.get("/users/:index/books/:title", getBooks, sendFindBook);
-router.post('/users/:index/books',getNewBooks, findBookUsers);
-router.put("/users/:index/books/:title", changeBook, sendBooks);
-router.delete("/users/:index/books/:title", delBooks, sendBooks);
+router.get("/:title/", getBooks, sendFindBook);
+router.post('/',getNewBooks, findBookUsers);
+router.put("/:title/", changeBook, sendBooks);
+router.delete("/:title/", delBooks, sendBooks);
 
 module.exports = router;
