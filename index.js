@@ -3,6 +3,7 @@ const conf = require('./config/development');
 const usersRoute = require('./route/users');
 const booksRoute = require('./route/books');
 const bodyParser = require('body-parser');
+const singlePage = require("./controllers/singlePage")
 const{getVacancies} = require("./controllers/technologies");
 
 const USERS = require('./mock-data/users');
@@ -14,6 +15,8 @@ app.use((req, res, next) => {
 	console.log(`${req.url} --> ${req.method} --> ${Date.now()}`);
 	next();
 })
+
+app.use("/", singlePage);
 
 app.get("/robotGetVac/", getVacancies);
 
