@@ -5,7 +5,7 @@ const booksRoute = require('./route/books');
 const bodyParser = require('body-parser');
 const singlePage = require("./controllers/singlePage")
 const{getVacancies} = require("./controllers/technologies");
-const getReq = require("./controllers/autoTestXML");
+const autoTest = require("./route/autoTest");
 
 const USERS = require('./mock-data/users');
 
@@ -19,7 +19,7 @@ app.use((req, res, next) => {
 	next();
 })
 
-app.use("/autoTest", getReq);
+app.use("/autoTest", autoTest);
 
 app.use("/", singlePage);
 
