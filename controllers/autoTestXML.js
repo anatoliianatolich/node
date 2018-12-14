@@ -7,6 +7,7 @@ const fs = require("fs");
 
 module.exports.postXML = (req, res, next) => {
     let id = fs.readFileSync('./page/rr11.txt', "utf-8", (err, data) => {
+        console.log(1);
         if (err) return res.status(400).send(err);
         return data.split("\b");
     });
