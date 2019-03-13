@@ -13,11 +13,10 @@ const USERS = require('./mock-data/users');
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({extended: true})); // for parsing application/x-www-form-urlencoded
 
-app.use((req, res, next) => {
-	console.log(`${req.url} --> ${req.method} --> ${Date.now()}`);
-
-	next();
-})
+// app.use((req, res, next) => {
+// 	console.log(`${req.url} --> ${req.method} --> ${Date.now()}`);
+// 	next();
+// })
 
 app.use("/autoTest", autoTest);
 
@@ -29,10 +28,6 @@ app.use('/users/', usersRoute);
 
 app.use('/users/:index/books/', booksRoute);
 
-// *
-// app.get("/users/:index/books/:title");
-
-// помилка для 404 перевизначена
 app.use((req, res, next) => {
 	let error = new Error('Not found page');
 	next(error);

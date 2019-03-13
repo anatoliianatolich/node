@@ -5,18 +5,20 @@ const request = require("request");
 const fs = require("fs");
 
 
-module.exports.postXML = (req, res, next) => {
-    let id = fs.readFileSync('./page/rr11.txt', "utf-8", (err, data) => {
-        if (err) return res.status(400).send(err);
+module.exports.postXML = async (req, res, next) => {
+    console.log("testXML");
+    let id = fs.readFileSync('./page/newArticle.txt', "utf-8", (err, data) => {
         return data.split("\b");
     });
+    // console.log(id);
     let articleProd = id.split("\r");
     articleProd.forEach((el, i) => {
         articleProd[i] = el.trim();
     })
 
-    // console.log(arr[2]);
-    articleProd.forEach((el) => {
+
+    await articleProd.forEach( (el) => {
+        //запускати без проксі обов`язково
         let XML = `<?xml version="1.0" encoding="utf-8"?><request><products><salecode>` + `${el}` + `</salecode><active>1</active></products></request>`;
         var options = {
             url: 'https://api.intertop.ua/api/productimages/',
@@ -26,14 +28,17 @@ module.exports.postXML = (req, res, next) => {
             method: "POST",
             body: XML
         }
-
+        const buffer = [];
         request(options, (err, response, body) => {
-            if(err) return res.status(400).send("")
+            if(err) return res.status(400).send(err);
             console.log(el + "\n"+ body);
-        })
-        res.status(200).end("good work");
-    })
+            buffer.push({el: body});
+        });
 
+        fs.writeFileSync('./res/res.txt', buffer);
+        console.log(buffer);
+    })
+    res.status(200).end("good work XML");
 }
 
 module.exports.getReq = (req, res, next) => {
@@ -43,7 +48,7 @@ module.exports.getReq = (req, res, next) => {
         if (err) return res.status(400).send(err);
         return data.split("\b");
     });
-    let arr = id.split("\r");
+    let arr = id.replace('\/', '').split("\r");
     arr.forEach((ei, i) => {
         arr[i] = arr[i].trim();
     })
