@@ -5,7 +5,7 @@ const request = require("request");
 const fs = require("fs");
 
 
-module.exports.postXML = async (req, res, next) => {
+module.exports.postXML = (req, res, next) => {
     console.log("testXML");
     let id = fs.readFileSync('./page/newArticle.txt', "utf-8", (err, data) => {
         return data.split("\b");
@@ -17,8 +17,7 @@ module.exports.postXML = async (req, res, next) => {
     })
 
 
-    await articleProd.forEach( (el) => {
-        //запускати без проксі обов`язково
+    articleProd.forEach( (el, i) => {
         let XML = `<?xml version="1.0" encoding="utf-8"?><request><products><salecode>` + `${el}` + `</salecode><active>1</active></products></request>`;
         var options = {
             url: 'https://api.intertop.ua/api/productimages/',
@@ -28,15 +27,24 @@ module.exports.postXML = async (req, res, next) => {
             method: "POST",
             body: XML
         }
-        const buffer = [];
-        request(options, (err, response, body) => {
-            if(err) return res.status(400).send(err);
-            console.log(el + "\n"+ body);
-            buffer.push({el: body});
-        });
+        //запускати без проксі обов`язково
 
-        fs.writeFileSync('./res/res.txt', buffer);
-        console.log(buffer);
+        // варіант 1 з промісі
+        const promise = new Promise (((resolve, reject) => {
+            request(options, (err, response, body) => {
+                if(err) return res.status(400).send(err);
+                let res = i + "\n" + el + "\n"+ body;
+                // console.log(i + "\n" + el + "\n"+ body);
+                resolve(res);
+                // buffer.push({el: body});
+            });
+        }));
+        // const buffer = [];
+        // console.log({promise});
+        promise.then((data)=> fs.appendFileSync('./res/res.txt', data));
+
+        // fs.writeFileSync('./res/res.txt', buffer);
+        // console.log(buffer);
     })
     res.status(200).end("good work XML");
 }
