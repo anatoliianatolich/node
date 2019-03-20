@@ -2,13 +2,14 @@ const request = require("request");
 const requestPromise = require("request-promise");
 const fs = require("fs");
 const base64 = require('base-64');
-const md5 = require('md5');
+const createHash = require("./md5");
+
 
 constData = fs.readFileSync("../page/reqData.json");
 
 const urlReg = 'https://api.intertop.ua/api/v2/user/reg/';
 const url1 = 'https://api.intertop.ua/api/v2/user/auth/';
-let url2 = 'https://api.intertop.ua/api/v2/user/token/?';
+let url2 = 'https://api.intertop.ua/api/v2/user/token/?grant_type=authorization_code&code=';
 
 let bodyReq = {
     params: {access_token: "5bdf1fd070cdb1ed02d535c5710e5b9ee9a11785"},
@@ -41,11 +42,42 @@ const generateToken = (constData)=> {
                         authorization: "Basic cGFuZWw6cGFuZWw=",
                         params: {
                             email: element.email,
-                            pass: '',
-                        }
-                    }
-                }
-                requestPromise()
+                            pass: createHash({email, password}) //не факт що спрацює
+                        },
+                    },
+                    method: "POST",
+                };
+
+                requestPromise(optionAuth)
+                 .then((body)=> {
+                     console.log(body.code);
+                     const {code} = body;
+                     const optionToken = {
+                         url: url2.concat(code),
+                         method: "POST",
+                         headers: {
+                            'content-type': "application/json",
+                            authorization: "Basic cGFuZWw6cGFuZWw=",
+                            params: {
+                                email: element.email,
+                                pass: element.password
+                            }
+                         }
+                     }
+
+                     requestPromise(optionToken)
+                        .then((body)=> {
+                            console.log(body);
+                            const {token} = body;
+                            element.token = token;
+                            fs.appendFileSync("../page/genToken.json");
+                        })
+                 })
+                 .catch((err)=> {
+                    console.log(err);
+                    res.status(204).send(err);
+                 })
+
             })
             .catch((err)=> {
                 console.log(err);
@@ -56,4 +88,3 @@ const generateToken = (constData)=> {
 }
 
 module.exports = generateToken;
-

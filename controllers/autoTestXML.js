@@ -28,23 +28,16 @@ module.exports.postXML = (req, res, next) => {
             body: XML
         }
         //запускати без проксі обов`язково
-
         // варіант 1 з промісі
         const promise = new Promise (((resolve, reject) => {
-            request(options, (err, response, body) => {
-                if(err) return res.status(400).send(err);
+            request(options, (err, responce, body) => {
+                if(err) return responce.status(400).send(err);
                 let res = i + "\n" + el + "\n"+ body;
-                // console.log(i + "\n" + el + "\n"+ body);
                 resolve(res);
-                // buffer.push({el: body});
+                console.log(1);
             });
         }));
-        // const buffer = [];
-        // console.log({promise});
         promise.then((data)=> fs.appendFileSync('./res/res.txt', data));
-
-        // fs.writeFileSync('./res/res.txt', buffer);
-        // console.log(buffer);
     })
     res.status(200).end("good work XML");
 }
@@ -63,7 +56,6 @@ module.exports.getReq = (req, res, next) => {
     console.log(arr[2]);
     arr.forEach((el, i) => {
         request(`http://10.18.0.181:7080/kvinto_good/in?GOOD?${el[i]}`, (err, response, body) => {
-            // if(!body) return res.status(400).end("no connect is KVINTO");
             let a = 0;
             a++;
             if (a == 10) return res.status(400).end("no connect is KVINTO")
