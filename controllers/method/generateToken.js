@@ -1,26 +1,24 @@
-const request = require("request");
 const requestPromise = require("request-promise");
 const fs = require("fs");
 const base64 = require('base-64');
 const createHash = require("./md5");
+const data =require("../../page/regData.json");
 
-
-constData = fs.readFileSync("../page/reqData.json");
 
 const urlReg = 'https://api.intertop.ua/api/v2/user/reg/';
 const url1 = 'https://api.intertop.ua/api/v2/user/auth/';
 let url2 = 'https://api.intertop.ua/api/v2/user/token/?grant_type=authorization_code&code=';
+// console.log(data.length);
 
-let bodyReq = {
-    params: {access_token: "5bdf1fd070cdb1ed02d535c5710e5b9ee9a11785"},
-    headers: { authorization: "Basic cGFuZWw6cGFuZWw="}
-};
+// console.log(fs.mkdirSync("../../page/"));
 
+// constData = fs.readFileSync("../../page/regData.json");
 const generateToken = (constData)=> {
     constData.forEach(element => {
-        console.log(element);
+    
+        console.log(element, "first request");
         let encode = base64.encode(element);
-        let optionsReq = {
+        let options = {
             url: urlReg,
             headers: {
                 'content-type': "application/json",
@@ -33,8 +31,8 @@ const generateToken = (constData)=> {
 
         requestPromise(options)
             .then((body)=> {
-                // if(body.data[0] !== true) return
-                console.log(el + "\n"+ body);
+                if(body.data[0] !== true) return
+                console.log(body, "requestPromise");
                 let optionAuth = {
                     url: url1,
                     headers: {
@@ -70,7 +68,9 @@ const generateToken = (constData)=> {
                             console.log(body);
                             const {token} = body;
                             element.token = token;
-                            fs.appendFileSync("../page/genToken.json");
+                            fs.appendFileSync("../../page/genenToken.json", body);
+                            let i = 0
+                            console.log(++i);
                         })
                  })
                  .catch((err)=> {
