@@ -16,7 +16,6 @@ module.exports.postXML = (req, res, next) => {
         articleProd[i] = el.trim();
     })
 
-
     articleProd.forEach( (el, i) => {
         let XML = `<?xml version="1.0" encoding="utf-8"?><request><products><salecode>` + `${el}` + `</salecode><active>1</active></products></request>`;
         var options = {
@@ -34,7 +33,7 @@ module.exports.postXML = (req, res, next) => {
                 if(err) return responce.status(400).send(err);
                 let res = i + "\n" + el + "\n"+ body;
                 resolve(res);
-                console.log(1);
+                console.log(res);
             });
         }));
         promise.then((data)=> fs.appendFileSync('./res/res.txt', data));
