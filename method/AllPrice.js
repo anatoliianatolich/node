@@ -9,11 +9,11 @@ module.exports = (req, res) => {
     request(options, (err, res, body)=> {
         // console.log(body);
         const stringBody = JSON.stringify(body);
-        const arrProduct = []
+        const arrProduct = [];
 
         console.log(typeof stringBody);
         fs.writeFileSync('./res/allPrice.json', stringBody);
-        res.status(200).end("write price");
+        res.statusCode(200).send("write price");
     })
 }
 
