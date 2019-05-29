@@ -1,12 +1,39 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
+
+  authUser = (e) => {
+
+    // console.log('click')
+      axios({
+              method: 'GET',
+              headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: "Basic cGFuZWw6cGFuZWw=",
+
+              },
+                // auth:"Basic cGFuZWw6cGFuZWw=",
+                params:{
+              // email:"MITKV04_2@MITIK.ua",
+              // pass:"PT1nTTA0Q011QXpNdUl6TnhJV1o0Y0RabFZHTWtOelkyUW1ZeGdET3pRek1pUlRNMmdET2lGRE8wQVRONTA0ODFCODg2MTRCMzQzODgxQkQ2QzNEMEVFRDc4RUI="},
+              access_token: "5bdf1fd070cdb1ed02d535c5710e5b9ee9a11785"
+          },
+              url: 'http://i-top-0.bi3x.org/api/v2/cart/city/'}
+      ).then( (response)=>{
+          console.log(response)
+      })
+  }
   render() {
     return (
       <div className="App">
+      <button onClick={this.authUser}>
+            regAuth
+          </button>
         <header className="App-header">
+          
           <img src={logo} className="App-logo" alt="logo" />
           <p>
             Edit <code>src/App.js</code> and save to reload.

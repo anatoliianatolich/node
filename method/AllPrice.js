@@ -6,14 +6,15 @@ module.exports = (req, res) => {
         url: "http://10.18.0.181:7080/kvinto/in?PRICES",
         method: "GET"
     }
-    request(options, (err, res, body)=> {
-        // console.log(body);
+    request(options, (err, body)=> {
+        console.log("string",(body));
+        console.log("res",res.outputSize);
         const stringBody = JSON.stringify(body);
-        const arrProduct = [];
-
         console.log(typeof stringBody);
         fs.writeFileSync('./res/allPrice.json', stringBody);
-        res.statusCode(200).send("write price");
+        console.log('11111'),
+        res.status(200).send("write price");
+
     })
 }
 

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    axios({
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            auth: "Basic cGFuZWw6cGFuZWw=",
+            params:{
+                "email":"MITKV04_2@MITIK.ua",
+                "pass":"PT1nTTA0Q011QXpNdUl6TnhJV1o0Y0RabFZHTWtOelkyUW1ZeGdET3pRek1pUlRNMmdET2lGRE8wQVRONTA0ODFCODg2MTRCMzQzODgxQkQ2QzNEMEVFRDc4RUI="},
+
+        },
+        // auth: "Basic cGFuZWw6cGFuZWw=",
+        url: 'http://i-top-0.bi3x.org/api/v2/user/auth/',
+
+    }).then((response)=>{
+        console.log(response.data)
+    });
+</script>
+<body>
+    <p style="font-size: 36px; color: #000; align-content: center">Test</p>
+</body>
+</html>
