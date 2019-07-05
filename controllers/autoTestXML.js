@@ -14,9 +14,10 @@ module.exports.postXML = (req, res, next) => {
     let articleProd = id.split("\r");
     articleProd.forEach((el, i) => {
         articleProd[i] = el.trim();
-    })
+    });
 
     articleProd.forEach( (el, i) => {
+
         let XML = `<?xml version="1.0" encoding="utf-8"?><request><products><salecode>` + `${el}` + `</salecode><active>1</active></products></request>`;
         var options = {
             url: 'https://api.intertop.ua/api/productimages/',
@@ -26,19 +27,22 @@ module.exports.postXML = (req, res, next) => {
             method: "POST",
             body: XML
         }
+        console.log(XML);
         //запускати без проксі обов`язково
         // варіант 1 з промісі
         const promise = new Promise (((resolve, reject) => {
-            request(options, (err, responce, body) => {
+            request(options, (err,rest, body) => {
                 if(err) return responce.status(400).send(err);
-                let res = i + "\n" + el + "\n"+ body;
-                resolve(res);
-                console.log(res);
+                // console.log(body);
+                let rest1 = i + "\n" + el + "\n"+ body;
+                // resolve(res);
+                console.log(rest1);
             });
         }));
         promise.then((data)=> fs.appendFileSync('./res/res.txt', data));
+        res.status(200).end("good work XML");
     })
-    res.status(200).end("good work XML");
+
 }
 
 module.exports.getReq = (req, res, next) => {
@@ -54,11 +58,13 @@ module.exports.getReq = (req, res, next) => {
     })
     console.log(arr[2]);
     arr.forEach((el, i) => {
-        request(`http://10.18.0.181:7080/kvinto_good/in?GOOD?${el[i]}`, (err, response, body) => {
+        request(`http://10.18.0.181:7080/kvinto_good/in?GOOD?${el[i]}`, (err, body) => {
             let a = 0;
             a++;
-            if (a == 10) return res.status(400).end("no connect is KVINTO")
+
+            // if (a == 10) return res.status(400).end("no connect is KVINTO")
             console.log(a + "count", i, body, arr[i]);
+            fs.appendFileSync('../../resPrice.json', body);
         });
     })
     res.status(200).end("GOOD");

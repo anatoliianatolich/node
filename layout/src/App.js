@@ -13,7 +13,6 @@ class App extends Component {
               headers: {
                   'Content-Type': 'application/json',
                   Authorization: "Basic cGFuZWw6cGFuZWw=",
-
               },
                 // auth:"Basic cGFuZWw6cGFuZWw=",
                 params:{
@@ -26,12 +25,41 @@ class App extends Component {
           console.log(response)
       })
   }
+  authToken = (e) => {
+
+    console.log('click')
+      axios({
+        method: 'POST',
+        headers: {
+            "params":"{\"email\":\"liutenkotest1@intertop.ua\",\"pass\":\"PT1BTXk0U091QXpNdUl6TnhZall5VUdPbE5HTWhSV1lpRkdNM0VUTmlSRE0zSVRPeFlUWXdZek5pTldaRUNCNzYwQTYxOTI3MDRCNTE3MEFCQURBMENFOEUyQjY=\"}",
+            'Content-Type':'application/json',
+            "Authorization": "Basic cGFuZWw6cGFuZWw="
+        },
+
+        url: 'https://api.intertop.ua/api/v2/user/auth/'
+      }).then( (response) => {
+        console.log(response);
+        axios({
+            method: "Post",
+            headers: {
+                "params": "{\"email\":\"liutenkotest1@intertop.ua\",\"pass\":\"lutik918172\"}",
+            },
+            params: {
+                grant_type:'authorization_code',
+                code:'0fa061a7fa50d1e3d25f0d2e93f226dac2e7e5b0'
+            }
+        }).then((responce)=> {console.log(responce)});
+
+      })
+  }
+
+  auth
+
   render() {
     return (
       <div className="App">
-      <button onClick={this.authUser}>
-            regAuth
-          </button>
+            <button onClick={this.authUser}>registration</button>
+          <button onClick={this.authToken}>AuthProd</button>
         <header className="App-header">
           
           <img src={logo} className="App-logo" alt="logo" />
