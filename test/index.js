@@ -25,7 +25,7 @@ const promise1 = new Promise((resolve, reject)=>{
 	resolve(a = 'test');
 });
 console.dir({promise1});
-promise1.then(console.log('a',a));
+promise1.then(console.log('asyncRequest.js',a));
 third();
 
 'use string'
