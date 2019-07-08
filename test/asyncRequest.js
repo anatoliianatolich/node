@@ -1,8 +1,8 @@
 const sqlConnect = require('../connectDB/connectSQL');
 
-module.exports.asyncPage = url => {
+module.exports.asyncPage = (req, res, next) => {
     async function getUser(){
-
+        const arr = [0, 1];
 
         arr.forEach((el)=>{
             sqlConnect.connection.query(`SELECT * FROM users LIMIT ${el}, 1`,
@@ -20,5 +20,7 @@ module.exports.asyncPage = url => {
     }
 
     main();
+
+    next();
 
 }

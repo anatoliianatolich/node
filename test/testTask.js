@@ -5,8 +5,8 @@ const request = require("request");
 const bodyParser = require("body-parser");
 const sqlConnect = require('../connectDB/connectSQL');
 const {asyncPage} = require('./asyncRequest');
-const fetch = require('./asyncParser');
 
+const fetch = require('./asyncParser');
 
 const port = 3005;
 
@@ -61,6 +61,17 @@ app
             .catch( err => {
                 console.log(err);
             })
+
+            // let url = `https://api.privatbank.ua/p24api/exchange_rates?json&date=${el}`;
+            // let aaa = rp(url).then((body)=> console.log(body))
+
+            // rp(url)
+            //     .then( (body) => {
+            //         arrCurrent.push({[el]: body});
+            //         if(arrCurrent.length == 6) res.send(arrCurrent);
+            //     }).catch((err)=>{
+            //     console.log(err);
+            // })
     })
     .get("/current/async", (req, res)=> {
         const arr = ["27.06.2019","26.06.2019","25.06.2019","24.06.2019","23.06.2019","22.06.2019","21.06.2019"];
