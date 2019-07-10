@@ -56,42 +56,14 @@ app
 
         Promise.all(arrCurrent)
             .then(values =>{
-                console.log(values);
-            res.status(200).send(values)})
+               let data = values.toString();
+            res.status(200).send(data);
+            })
             .catch( err => {
                 console.log('62', err);
             })
 
-            // let url = `https://api.privatbank.ua/p24api/exchange_rates?json&date=${el}`;
-            // let aaa = rp(url).then((body)=> console.log(body))
-
-            // rp(url)
-            //     .then( (body) => {
-            //         arrCurrent.push({[el]: body});
-            //         if(arrCurrent.length == 6) res.send(arrCurrent);
-            //     }).catch((err)=>{
-            //     console.log(err);
-            // })
     })
-    .get("/current/async", (req, res)=> {
-        const arr = ["27.06.2019","26.06.2019","25.06.2019","24.06.2019","23.06.2019","22.06.2019","21.06.2019"];
-        let arrCurrent = [];
-
-        async function getData(arr){
-
-        }
-
-        // arr.forEach(await (el, i) => {
-        //     let url = `https://api.privatbank.ua/p24api/exchange_rates?json&date=${el}`;
-        //     request(url, (error, responce, body) => {
-        //         console.log("57",i ,body);
-        //     })
-        //
-        // });
-        //
-        // arrCurrent.push( )
-    },
-    )
     .get("/users", (req,res) => {
         connection.query("SELECT * FROM users WHERE id >= 20",
             function(err, results, fields) {
