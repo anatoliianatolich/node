@@ -1,3 +1,9 @@
 {
-	"port": 5050
+	"port": 5050,
+	"sql": {
+		"host": "db4free.net",
+		"user": "anatoliii",
+		"database": "sqldev",
+		"password": "magento2123456789"
+	}
 }

@@ -59,7 +59,7 @@ app
                 console.log(values);
             res.status(200).send(values)})
             .catch( err => {
-                console.log(err);
+                console.log('62', err);
             })
 
             // let url = `https://api.privatbank.ua/p24api/exchange_rates?json&date=${el}`;
