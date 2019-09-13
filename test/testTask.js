@@ -17,35 +17,7 @@ sqlConnect();
 console.log( typeof asyncPage);
 
 app
-    .get('/', asyncPage
-        // (req, res) => {
-        // res.status(200).send("<p>Hello</p>");
-        // async function getUser(){
-        //     const arr = [1 , 2 ];
-        //     arr.forEach((el)=>{
-        //         sqlConnect.connection.query(`SELECT * FROM users LIMIT ${el}`, (err, val, fields) => {
-        //             console.log('37',err);
-        //             console.log('38', val);
-        //             return Promise.resolve(val);
-        //         })
-        //     })
-        //
-        // }
-        //
-        // async function main(){
-        //     let a =  await getUser();
-        //     res.send(`<h1>${a}</h1>`);
-        // }
-        //
-        // main();
-
-        // let a =  getUser().then(user => {return user; });
-
-        // function getBook(`){
-        //     connection.query('SELECT * FROM users LIMIT 1')
-        // }
-    // }
-    )
+    .get('/', asyncPage)
     .get("/current", (req, res)=> {
         const arr = ["27.06.2019","26.06.2019","25.06.2019","24.06.2019","23.06.2019","22.06.2019","21.06.2019"];
         const arrCurrent = [];
