@@ -1,5 +1,6 @@
 node_modules/
 .idea/
 config/config.js
+config/development.js
 page/
 res/

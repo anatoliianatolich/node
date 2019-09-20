@@ -5,5 +5,9 @@
 		"user": "anatoliii",
 		"database": "sqldev",
 		"password": "magento2123456789"
+	},
+	"email":{
+		"user":"test2027a@gmail.com",
+		"pass": "test1234567890"
 	}
 }
